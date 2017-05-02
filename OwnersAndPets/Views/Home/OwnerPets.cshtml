@@ -1,0 +1,74 @@
+﻿@model OwnersAndPets.ViewModels.ChildPageViewModel
+@{
+    Layout = "/Views/MasterView.cshtml";
+}
+<script src="/Scripts/script_secondary.js"></script>
+@{
+    var items = Model.Pets.ToArray();
+    if (!items.Any())
+    {
+        <div>No pets found!</div>
+    }
+    else
+    {
+        <table id="main2">
+            <thead>
+            <tr id="main_title">
+                <th>Name</th>
+                <th id="sort-cell">
+                    <form action="@Url.Action("OwnerPets", "Home")" id="sort-header-name" method="get">
+                        <input type="hidden" name="fieldName" value="Name" />
+                        <input type="hidden" name="sortDirection" value="@ViewBag.SortPets.sortDirection" />
+                        <input type="hidden" name="OwnerId" value="@Model.OwnerId" />
+                        <input type="button" id="sort-direction-image" alt="" class="@Html.Raw(ViewBag.SortPets.sortDirection.Equals("asc") ? "sort-asc" : "sort-desc")" onclick="return false;" />
+                    </form>
+                </th>
+            </tr>
+            </thead>
+            @{
+                int i = 0;
+                while (true)
+                {
+                    if (i >= items.Length)
+                    {
+                        break;
+                    }
+                    <tbody class="hidden">
+                    @for (int j = i; j < i + 3 && j < items.Length; j++)
+                    {
+                        <tr>
+                            <td>@items[j].Name</td>
+                            <td id="delete">
+                                <form action="@Url.Action("DeletePetRecord", "Home")" method="delete">
+                                    <input type="hidden" name="PetId" value="@items[j].Id"/>
+                                    <input type="hidden" name="OwnerId" value="@Model.OwnerId"/>
+                                    <input type="submit" value="Delete"/>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                    i += 3;
+                }
+            }
+        </table>
+        }
+    }
+
+@section _toAllUsers
+{
+    <tr>
+        <td>
+            <a id="Base" href="@Url.Action("Index", "Home")" onclick='GoToMain()'><u><cite>Back to all Users</cite></u></a>
+        </td>
+    </tr>
+}
+@section _submitPet
+{
+    <form action="@Url.Action("AddPetRecord", "Home")" method="post">
+        <td>Enter Pet's Name</td>
+        <td><input type="text" placeholder="Enter Pet's Name" name="PetName" required /></td>
+        <input type="hidden" name="OwnerId" value="@Model.OwnerId" />
+        <td><input type="submit" value="Add" /></td>
+    </form>
+}

@@ -1,0 +1,45 @@
+﻿@model OwnersAndPets.ViewModels.BaseViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@Model.Title</title>
+    <link rel="stylesheet" href="/Content/css/styles.css" />
+    <script src="/Scripts/pagination.js"></script>
+    <script src="/Scripts/getURLParameters.js"></script>
+</head>
+<body>
+        <div id="wrapper">
+            <div>
+                <table id="header">
+                    <tr>
+                        <th colspan="3"><h1>@Model.Title</h1></th>
+                    </tr>
+                    @RenderSection("_toAllUsers", false)
+                    <tr>
+                        @RenderSection("_submitOwner", false)
+                        @RenderSection("_submitPet", false)
+                    </tr>
+                </table>
+            </div>
+            <div class="Users">
+                <div id="table-wrapper">
+                    <div>
+                        <table id="total-count">
+                            <tr><td>Total count:&nbsp;</td></tr>
+                        </table>
+                    </div>
+                    <div id="content-wrapper">
+                       @RenderBody()     
+                    </div>
+                </div>
+            </div>
+            <div id="footer">
+            </div>
+        </div>
+</body>
+</html>

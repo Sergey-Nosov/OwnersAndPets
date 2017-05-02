@@ -1,0 +1,65 @@
+﻿@model OwnersAndPets.ViewModels.MainPageViewModel
+@{
+    Layout = "/Views/MasterView.cshtml";
+}
+<script src="/Scripts/script_main.js"></script>
+@{
+    var items = Model.Groups.ToArray();
+    if (!items.Any())
+    {
+            <div>No owners found!</div>
+    }
+    else
+    {
+        <table id="main">
+            <thead>
+            <tr id="main_title">
+                <th>Name</th>
+                <th id="sort-cell">
+                    <form action="@Url.Action("Index", "Home")" id="sort-header-name" method="get">
+                        <input type="hidden" name="fieldName" value="OwnerName"/>
+                        <input type="hidden" name="sortDirection" value="@ViewBag.SortOwners.sortDirection"/>
+                        <input type="button" id="sort-direction-image" alt="" class="@Html.Raw(ViewBag.SortOwners.sortDirection.Equals("asc") ? "sort-asc" : "sort-desc")" onclick="return false;"/>
+                    </form>
+                </th>
+                <th colspan="2">Pets Count</th>
+            </tr>
+            </thead>
+            @{
+                int i = 0;
+                while (true)
+                {
+                    if (i >= items.Length)
+                    {
+                        break;
+                    }
+                    <tbody class="hidden">
+                    @for (int j = i; j < i + 3 && j < items.Length; j++)
+                    {
+                        <tr>
+                            <td colspan="2"><a href="@Url.Action("OwnerPets", "Home", new {ownerId = items[j].OwnerId})">@items[j].OwnerName</a></td>
+                            <td><span>@items[j].Count</span></td>
+                            <td id="delete">
+                                <form action="@Url.Action("DeleteOwnerRecord", "Home")" method="delete">
+                                    <input type="hidden" name="OwnerId" value="@items[j].OwnerId"/>
+                                    <input type="submit" value="Delete"/>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                    i += 3;
+                }
+            }
+        </table>
+    }
+}
+
+@section _submitOwner
+{
+    <form action="@Url.Action("AddOwnerRecord", "Home")" method="post">
+        <td>Enter Owner's Name</td>
+        <td><input type="text" placeholder="Enter Owner's Name" name="ownerName" required/></td>
+        <td><input type="submit" value="Add" /></td>
+    </form>
+}
