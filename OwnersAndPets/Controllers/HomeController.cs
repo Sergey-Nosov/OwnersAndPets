@@ -54,18 +54,16 @@ namespace OwnersAndPets.Controllers
                     throw new DataException();
                 }
                 var ownerName = ownerEntity.Name;
-                var pets = (from op in context.OwnerPets
+                var pets = from op in context.OwnerPets
                         join p in context.Pets
                         on op.PetId equals p.Id
                         where op.OwnerId == ownerId
-                        select new PetViewModel { Name = p.Name, Id = p.Id });//.ToList();
-                //IQueryable<PetViewModel> result = pets;//.ToList().AsQueryable();
+                        select new PetViewModel { Name = p.Name, Id = p.Id };
                 if (petsRequest != null && !string.IsNullOrEmpty(petsRequest.sortDirection) && !string.IsNullOrEmpty(petsRequest.fieldName))
                 {
                     pets = pets.OrderBy($"{petsRequest.fieldName} {petsRequest.sortDirection}");
                 }
                 ViewBag.SortPets = petsRequest;
-                //return View(new MainPageViewModel { Groups = result.ToList() });
                 return View(new ChildPageViewModel(ownerName) { Pets = pets.ToList(), OwnerId = ownerId});
             }
         }
@@ -105,7 +103,6 @@ namespace OwnersAndPets.Controllers
             }
         }
 
-        // action parameters should start from lower case character.
         public ActionResult DeleteOwnerRecord(int OwnerId)
         {
             using (Context context = Context.Create())
