@@ -10,19 +10,6 @@ using OwnersAndPets.RequestObjects;
 
 namespace OwnersAndPets.Controllers
 {
-    // Сделай так, что контекст приходил в контроллер через инъекцию зависимостей, например, для єтого установи нугет пакет, автофак
-    // время жизни контекста в контейнере должно быть PerRequest
-    /*
-     public class HomeController
-     {
-        private Context context;
-        public HomeController(Context _context)
-        {
-            context = _context;
-        }
-     }      
-         */
-// Пофикси баг когда при непрямом нажатии на ссылку страницы выдаёт пустую таблицу
     public class HomeController : Controller
     {
         [HttpGet]
